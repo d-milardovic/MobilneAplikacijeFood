@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_limit"
+        android:icon="@android:drawable/stat_sys_warning"
+        app:showAsAction="always"
+        android:title="Dnevni limit">
+    </item>
+
+    <item
+        android:id="@+id/menu_add"
+        android:icon="@android:drawable/ic_menu_add"
+        app:showAsAction="always"
+        android:title="Dodaj obrok">
+    </item>
+
+    <item
+        android:id="@+id/menu_logs"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        app:showAsAction="always"
+        android:title="Povijest">
+    </item>
+</menu>

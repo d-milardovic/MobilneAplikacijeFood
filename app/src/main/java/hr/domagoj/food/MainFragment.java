@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.ListFragment;
 
@@ -42,19 +45,18 @@ public class MainFragment extends ListFragment {
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
 
         if(dailyLimit == 0) {
-            alert.setMessage("Zabilježiti pojedeni obrok?\n\n" +
-                    "Niste postavili dnevni limit.");
+            alert.setMessage(getString(R.string.msg_no_limit));
         } else if (remainingCal >= 0){
-            alert.setMessage("Zabilježiti pojedeni obrok? \n\n" +
+            alert.setMessage(getString(R.string.msg_pojedeni_obrok) +
                     "Danas ste unjeli " + todayCal + "cal.\n" +
                     "Još " + remainingCal + " do dnevnog limita.");
         } else {
-            alert.setMessage("Zabilježiti pojedeni obrok? \n\n" +
+            alert.setMessage(getString(R.string.msg_pojedeni_obrok) +
                     "Danas ste unjeli " + todayCal + "cal.\n" +
                     "PREKORAČILI STE DNEVNI LIMIT!");
         }
 
-        alert.setPositiveButton("OK",
+        alert.setPositiveButton(getString(R.string.ok),
                 new DialogInterface.OnClickListener() {
 
                     @Override
@@ -65,7 +67,7 @@ public class MainFragment extends ListFragment {
                     }
                 });
 
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -75,6 +77,39 @@ public class MainFragment extends ListFragment {
         alert.show();
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> av, View v, final int position, long id) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setMessage(getString(R.string.msg_delete));
+                alert.setPositiveButton(R.string.ok,
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Utils.removeMeal(position,getActivity());
+                                loadData();
+
+                                dialog.dismiss();
+
+                            }
+                        });
+
+                alert.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                });
+
+                alert.show();
+                return true;
+            }
+        });
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

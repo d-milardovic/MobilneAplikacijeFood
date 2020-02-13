@@ -49,23 +49,23 @@ public class MainActivity extends AppCompatActivity {
 
     public void onMealAddAction() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Dodaj obrok");
+        builder.setTitle(getString(R.string.dodaj_obrok));
 
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
 
         final EditText titleBox = new EditText(this);
-        titleBox.setHint("Ime");
+        titleBox.setHint(R.string.ime_hint);
         layout.addView(titleBox);
 
         final EditText descriptionBox = new EditText(this);
-        descriptionBox.setHint("Cal");
+        descriptionBox.setHint(R.string.cal_hint);
         descriptionBox.setInputType(InputType.TYPE_CLASS_NUMBER);
         layout.addView(descriptionBox);
 
         builder.setView(layout);
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String ime = titleBox.getText().toString();
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 mainFragment.loadData();
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onChangeLimitAction() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Promjeni dnevni limit");
+        builder.setTitle(getString(R.string.promjeni_dnevni_limit));
 
         int dailyLimit = Utils.getDailyLimit(this);
 
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setView(input);
 
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String text = input.getText().toString();
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();

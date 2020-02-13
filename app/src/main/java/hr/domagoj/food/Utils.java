@@ -3,6 +3,7 @@ package hr.domagoj.food;
 import android.content.Context;
 import android.preference.PreferenceManager;
 import android.text.format.DateUtils;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -54,6 +55,25 @@ class Utils {
         return gson.fromJson(mealString, mealType);
     }
 
+
+    static void removeMeal(int index, Context context){
+
+        ArrayList<Meal> meals = getMealsFromStorage(context);
+        if (index > predefinedMeals.length - 1) {
+            meals.remove(index - predefinedMeals.length);
+        } else {
+            Toast.makeText(context, context.getString(R.string.msg_nemoze_predefinirano_stanje), Toast.LENGTH_LONG).show();
+        }
+
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(meals);
+
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putString(MEALS_KEY, jsonString)
+                .apply();
+    }
+
     static void addToLog(Meal meal, Context context) {
         ArrayList<DailyLog> dailyLogs = getLogs(context);
 
@@ -62,9 +82,13 @@ class Utils {
         if(todayLogIndex != -1) {
             DailyLog todayLog = dailyLogs.get(todayLogIndex);
             todayLog.cal += meal.cal;
+            todayLog.addMeal(meal);
             dailyLogs.set(todayLogIndex, todayLog);
         } else {
-            dailyLogs.add(new DailyLog(new Date(), meal.cal));
+            DailyLog log = new DailyLog(new Date(), meal.cal);
+            log.addMeal(meal);
+            dailyLogs.add(log);
+
         }
 
         Gson gson = new Gson();
